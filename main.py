@@ -30,7 +30,7 @@ def predict(src_to_model, src_to_labels, file_name):
         return class_name
 
     with open("src/models/descriptionObjects.txt", "r", encoding="utf-8") as file:
-        description_objects = [line.strip() for line in file.readlines()]
+        description_objects = [line.strip().replace('\\n', '\n') for line in file]
 
     return class_name, description_objects[index]
 
@@ -52,9 +52,19 @@ def get_photo(message):
             new_file.write(downloaded_file)
         bot.send_message(message.chat.id, "Фото получено! Обработка фотографии...")
 
-        bot.send_message(message.chat.id, f"Степень заснеженности: {predict('src/models/isSnowModel.h5', 'src/models/labelsIsSnow.txt', file_name)} ❄️")
+        predict_snow = predict('src/models/isSnowModel.h5', 'src/models/labelsIsSnow.txt', file_name)
+        bot.send_message(message.chat.id, f"Степень заснеженности: {predict_snow} ❄️")
 
-        #predict_object, description_object = predict('src/models/isSnowModel.h5', 'src/models/labelsIsSnow.txt', file_name)
+        if (predict_snow == "Значительная"):
+            predict_object, description_object = predict('src/models/winterObjects.h5', 'src/models/labelsObjects.txt', file_name)
+        else:
+            predict_object, description_object = predict('src/models/summerObjects.h5', 'src/models/labelsObjects.txt', file_name)
+        
+        bot.send_message(
+            message.chat.id,
+            f"*{predict_object}* 🧭\n\n{description_object}",
+            parse_mode='Markdown'
+        )
 
 
     except Exception as e:
