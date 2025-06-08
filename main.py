@@ -23,8 +23,8 @@ def predict(src_to_model, src_to_labels, file_name):
     index = np.argmax(prediction)
     class_name = class_names[index]
 
-    confidence_score = prediction[0][index]
-    print(confidence_score)
+    # confidence_score = prediction[0][index]
+    # print(confidence_score)
 
     if ("isSnowModel" in src_to_model):
         return class_name
@@ -53,7 +53,7 @@ def get_photo(message):
         bot.send_message(message.chat.id, "Фото получено! Обработка фотографии...")
 
         predict_snow = predict('src/models/isSnowModel.h5', 'src/models/labelsIsSnow.txt', file_name)
-        bot.send_message(message.chat.id, f"Степень заснеженности: {predict_snow} ❄️")
+        #bot.send_message(message.chat.id, f"Степень заснеженности: {predict_snow} ❄️")
 
         if (predict_snow == "Значительная"):
             predict_object, description_object = predict('src/models/winterObjects.h5', 'src/models/labelsObjects.txt', file_name)
