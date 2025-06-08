@@ -1,0 +1,12 @@
+# Игнорировать всё
+*
+
+# Исключения для .gitignore и pubspec.yaml
+!.gitignore
+!main.py
+!requirements.txt
+# Исключения для папок lib и src
+!src/
+
+# Игнорирование всего в папках src и lib отменено
+!src/**
